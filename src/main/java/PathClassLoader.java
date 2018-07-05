@@ -18,18 +18,18 @@ public class PathClassLoader extends ClassLoader {
         this.classpath = classpath;
     }
 
+    public PathClassLoader(){
+        this.classpath = "";
+    }
+
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        if (classpath.startsWith(name)){
             byte[] classData = getData(name);
             if (classData == null ) {
                 throw new ClassNotFoundException();
             } else  {
                 return defineClass(name, classData, 0, classData.length);
             }
-        } else {
-            return super.loadClass(name);
-        }
     }
 
 
@@ -50,15 +50,15 @@ public class PathClassLoader extends ClassLoader {
         return null;
     }
 
-    public static void main(String[] arg){
-        Class cs = null;
-        PathClassLoader pathClassLoader = new PathClassLoader("com.example");
+    public static void main(String[] arg) {
         try {
-            cs = pathClassLoader.findClass("message.class");
-        } catch (ClassNotFoundException e) {
+            ClassLoader pcl = new PathClassLoader("D:/");
+            Class c = pcl.loadClass("PathClassLoader");
+            System.out.println(c.newInstance());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("this cs === " + cs);
+
     }
 
 }
