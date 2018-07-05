@@ -43,18 +43,33 @@ public class PathClassLoader extends ClassLoader {
             while ((num = is.read(buffer)) != -1){
                 stream.write(buffer, 0 , num);
             }
-            return stream.toByteArray();
+            return deCode(stream.toByteArray());
         } catch (IOException e){
             e.printStackTrace();
         }
         return null;
     }
 
+    private byte[] deCode(byte[] src){
+        byte[] decode = null;
+        decode = src;
+        //do something niubility! 精密解码过程
+        return decode;
+    }
+
+
+    //java 类热部署
     public static void main(String[] arg) {
         try {
-            ClassLoader pcl = new PathClassLoader("D:/");
-            Class c = pcl.loadClass("PathClassLoader");
-            System.out.println(c.newInstance());
+            PathClassLoader pcl = new PathClassLoader("D:/");
+            Class c1 = pcl.findClass("StdLib.BinaryDump");
+            System.out.println("classpath =  D:/StdLib/BinaryDump.class");
+            System.out.println(c1.newInstance());
+
+            PathClassLoader pc2 = new PathClassLoader("D:/");
+            Class c2 = pc2.findClass("StdLib.BinaryDump");
+            System.out.println(c2.newInstance());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
